@@ -1,4 +1,18 @@
-on: [push, pull_request, workflow_dispatch]
+# ビルド結果に関わるファイルが変わったときだけ走らせる（README や画像だけの変更では走らない）
+on:
+  push:
+    paths:
+      - "config/**"
+      - "build.yaml"
+      - "zephyr/**"
+      - ".github/workflows/**"
+  pull_request:
+    paths:
+      - "config/**"
+      - "build.yaml"
+      - "zephyr/**"
+      - ".github/workflows/**"
+  workflow_dispatch:
 
 permissions:
   contents: read
