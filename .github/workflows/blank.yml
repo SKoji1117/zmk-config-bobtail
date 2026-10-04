@@ -21,3 +21,37 @@ jobs:
   build:
     # v0.3.0
     uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@edf5c0814fd3ea202e43aad2d68fd32e882a518c
+
+  # main でビルドが通ったら、連番のタグ（v1, v2, ...）を付けて uf2 を Release に置く。
+  # 書き込み権限はこのジョブだけに与え、外部の action は使わない。
+  release:
+    name: Release
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    concurrency: release
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Publish firmware
+        run: |
+          set -euo pipefail
+          gh run download "$GITHUB_RUN_ID" -n firmware -D fw
+
+          prev="$(gh api "repos/$GH_REPO/releases?per_page=100" \
+            -q '[.[].tag_name | select(test("^v[0-9]+$")) | ltrimstr("v") | tonumber] | max // 0')"
+          tag="v$((prev + 1))"
+
+          notes=""
+          if [ "$prev" -gt 0 ]; then
+            notes="$(gh api "repos/$GH_REPO/compare/v$prev...$GITHUB_SHA" \
+              -q '.commits[] | "- \(.commit.message | split("\n")[0]) (\(.sha[0:7]))"')"
+          fi
+          [ -n "$notes" ] || notes="- ${GITHUB_SHA:0:7} をビルド"
+
+          gh release create "$tag" fw/*.uf2 \
+            --target "$GITHUB_SHA" --title "$tag" --notes "$notes"
