@@ -136,7 +136,7 @@ path.combo { stroke: #7f7f7f; }
 
 }
 
-svg.keymap { background-color: #FFF; }</style>
+svg.keymap { background-color: #6b6767; }</style>
 <g transform="translate(30, 0)" class="layer-Mac-Default_Layer">
 <text x="0" y="28" class="label" id="Mac-Default_Layer">Mac-Default_Layer:</text>
 <g transform="translate(0, 56)">

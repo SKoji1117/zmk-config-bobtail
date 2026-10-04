@@ -47,7 +47,7 @@ main に push すると走る。Actions の実行結果から `firmware` をダ�
 | `BobTail_L-seeeduino_xiao_ble-zmk.uf2` | 左手側 |
 | `settings_reset-seeeduino_xiao_ble-zmk.uf2` | 設定の初期化用 |
 
-`firmware/` には、GitHub Actions でビルドした uf2 を置いてある（`8df9f5f` 時点。キーマップを変えたら差し替える）。
+`firmware/` には、GitHub Actions でビルドした uf2 を置いてある（`bd97ae4` 時点。キーマップを変えたら差し替える）。
 
 # ファームウェアの適用方法
 
