@@ -37,17 +37,17 @@ explorer.exe "$(wslpath -w ~/zmk-ws/zmk-config-bobtail/out)"
 
 ## GitHub Actions
 
-main に push すると走る。Actions の実行結果から `firmware` をダウンロードして解凍する。
+main に push すると走る。ただし、ビルドに関わるファイル（`config/`、`build.yaml`、`zephyr/`、`.github/workflows/`）が変わったときだけで、README や画像だけの変更では走らない。
 
-どちらの方法でも、次の 3 つができる。
+ビルドが通ると、連番のタグ（`v1`、`v2`、…）が付いた [Release](https://github.com/SKoji1117/zmk-config-bobtail/releases) が自動で作られ、uf2 が添付される。最新版は次のリンクから直接落とせる。
 
 | ファイル | 用途 |
 | --- | --- |
-| `BobTail_R-seeeduino_xiao_ble-zmk.uf2` | 右手側 |
-| `BobTail_L-seeeduino_xiao_ble-zmk.uf2` | 左手側 |
-| `settings_reset-seeeduino_xiao_ble-zmk.uf2` | 設定の初期化用 |
+| [`BobTail_R-seeeduino_xiao_ble-zmk.uf2`](https://github.com/SKoji1117/zmk-config-bobtail/releases/latest/download/BobTail_R-seeeduino_xiao_ble-zmk.uf2) | 右手側 |
+| [`BobTail_L-seeeduino_xiao_ble-zmk.uf2`](https://github.com/SKoji1117/zmk-config-bobtail/releases/latest/download/BobTail_L-seeeduino_xiao_ble-zmk.uf2) | 左手側 |
+| [`settings_reset-seeeduino_xiao_ble-zmk.uf2`](https://github.com/SKoji1117/zmk-config-bobtail/releases/latest/download/settings_reset-seeeduino_xiao_ble-zmk.uf2) | 設定の初期化用 |
 
-`firmware/` には、GitHub Actions でビルドした uf2 を置いてある（`3c8dd69` 時点。キーマップを変えたら差し替える）。
+ローカルビルドでも、同じ名前の 3 つができる。
 
 # ファームウェアの適用方法
 
@@ -77,8 +77,8 @@ main に push すると走る。Actions の実行結果から `firmware` をダ�
 
 1. `config/BobTail.keymap` を編集する（[keymap-editor](https://nickcoutsos.github.io/keymap-editor/) でもよい）
 2. `bash scripts/build-local.sh` でビルドが通ることを確かめる
-3. main に push する
+3. main に push する。Actions が通ると、新しい Release に uf2 が置かれる
 4. 上の「ファームウェアの適用方法」で書き込む
-5. [keymap-drawer](https://keymap-drawer.streamlit.app/) に `.keymap` を読ませて `figs/` の画像を更新し、`firmware/` の uf2 を差し替える
+5. [keymap-drawer](https://keymap-drawer.streamlit.app/) に `.keymap` を読ませて `figs/` の画像を更新する
 
 依存（`config/west.yml` の ZMK フォークとトラックボールのドライバ、`.github/workflows/blank.yml` の再利用ワークフロー）は、コミットハッシュに固定してある。上げるときは、ハッシュを書き換えてからローカルビルドで確かめる。
