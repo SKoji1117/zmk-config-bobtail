@@ -47,7 +47,7 @@ main に push すると走る。Actions の実行結果から `firmware` をダ�
 | `BobTail_L-seeeduino_xiao_ble-zmk.uf2` | 左手側 |
 | `settings_reset-seeeduino_xiao_ble-zmk.uf2` | 設定の初期化用 |
 
-`firmware/` に入っている uf2 は fork 元のもので、このリポのキーマップは反映されていない。
+`firmware/` には、GitHub Actions でビルドした uf2 を置いてある（`8df9f5f` 時点。キーマップを変えたら差し替える）。
 
 # ファームウェアの適用方法
 
@@ -79,6 +79,6 @@ main に push すると走る。Actions の実行結果から `firmware` をダ�
 2. `bash scripts/build-local.sh` でビルドが通ることを確かめる
 3. main に push する
 4. 上の「ファームウェアの適用方法」で書き込む
-5. [keymap-drawer](https://keymap-drawer.streamlit.app/) に `.keymap` を読ませて、`figs/` の画像を更新する
+5. [keymap-drawer](https://keymap-drawer.streamlit.app/) に `.keymap` を読ませて `figs/` の画像を更新し、`firmware/` の uf2 を差し替える
 
 依存（`config/west.yml` の ZMK フォークとトラックボールのドライバ、`.github/workflows/blank.yml` の再利用ワークフロー）は、コミットハッシュに固定してある。上げるときは、ハッシュを書き換えてからローカルビルドで確かめる。
