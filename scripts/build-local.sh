@@ -8,7 +8,8 @@
 # （既定は ~/zmk-ws/<リポジトリ名>）。uf2 は $ZMK_WS/out に出る。
 set -euo pipefail
 
-REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# ZMK_REPO を渡すと、同じ構成の別の zmk-config リポをビルドできる
+REPO="${ZMK_REPO:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 WS="${ZMK_WS:-$HOME/zmk-ws/$(basename "$REPO")}"
 # ZMK フォークが Zephyr 3.5 系なので、イメージも 3.5 に固定する
 IMAGE="${ZMK_IMAGE:-zmkfirmware/zmk-build-arm:3.5}"
@@ -50,22 +51,23 @@ west zephyr-export >/dev/null
 python3 - <<'PY' > .targets
 import yaml
 for t in yaml.safe_load(open("module/build.yaml")).get("include", []):
-    print(t["board"], t.get("shield", "-"), t.get("snippet", "-"))
+    print(t["board"], t.get("shield", "-"), t.get("snippet", "-"), sep="\t")
 PY
 
 pristine=auto
 [ "${PRISTINE:-0}" = 1 ] && pristine=always
 
-while read -r board shield snippet; do
+while IFS=$'\t' read -r board shield snippet; do
     name="${shield}-${board}-zmk"
     [ "$shield" = - ] && name="${board}-zmk"
-    args=(-s zmk/app -d "build/$name" -b "$board" -p "$pristine")
+    # シールド名に空白が入ることがある（例: "X_R rgbled_adapter"）
+    args=(-s zmk/app -d "build/${name// /_}" -b "$board" -p "$pristine")
     [ "$snippet" != - ] && args+=(-S "$snippet")
     cmake_args=(-DZMK_CONFIG=/ws/config -DZMK_EXTRA_MODULES=/ws/module)
     [ "$shield" != - ] && cmake_args+=(-DSHIELD="$shield")
     echo "=== $name ==="
     west build "${args[@]}" -- "${cmake_args[@]}"
-    cp "build/$name/zephyr/zmk.uf2" "out/$name.uf2"
+    cp "build/${name// /_}/zephyr/zmk.uf2" "out/$name.uf2"
 done < .targets
 
 echo
