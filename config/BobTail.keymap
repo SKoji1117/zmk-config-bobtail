@@ -99,7 +99,7 @@
         Mac-Default_Layer {
             bindings = <
 &kp Q      &kp W         &kp E         &kp R                      &kp T                                                &kp Y           &kp U       &kp I             &kp O       &kp P
-&kp A      &hml LCTRL S         &hml LSHFT D         &hml LGUI F                      &hml LALT G           &kp TAB             &kp AT_SIGN      &hmr LALT H           &hmr LGUI J       &hmr LSHFT K             &hmr LCTRL L       &kp MINUS
+&kp A      &hml LCTRL S         &hml LSHFT D         &hml LGUI F                      &hml LALT G           &kp AT_SIGN         &kp TAB          &hmr LALT H           &hmr LGUI J       &hmr LSHFT K             &hmr LCTRL L       &kp MINUS
 &kp Z      &kp X         &kp C         &kp V                      &kp B           &kp LG(LS(N4))      &lt 7 HASH       &kp N           &kp M       &kp COMMA         &kp PERIOD  &kp SLASH
 &kp LCTRL  &kp LEFT_ALT  &kp LEFT_GUI  &mt LEFT_SHIFT LANGUAGE_1  &lt 2 SPACE     &lt 6 LANGUAGE_2    &lt 4 ENTER      &kp BACKSPACE                                             &kp DELETE
             >;
@@ -111,7 +111,7 @@
         Win-Default_Layer {
             bindings = <
 &kp Q      &kp W         &kp E             &kp R                      &kp T                                                &kp Y           &kp U        &kp I             &kp O       &kp P
-&kp A      &hml LCTRL S         &hml LSHFT D             &hml LCTRL F                      &hml LALT G           &kp TAB             &kp AT_SIGN      &hmr LALT H           &hmr LCTRL J        &hmr LSHFT K             &hmr LCTRL L       &kp MINUS
+&kp A      &hml LCTRL S         &hml LSHFT D             &hml LCTRL F                      &hml LALT G           &kp AT_SIGN         &kp TAB          &hmr LALT H           &hmr LCTRL J        &hmr LSHFT K             &hmr LCTRL L       &kp MINUS
 &kp Z      &kp X         &kp C             &kp V                      &kp B           &kp LG(LS(S))       &lt 7 HASH       &kp N           &kp M        &kp COMMA         &kp PERIOD  &kp SLASH
 &kp LCTRL  &kp LEFT_ALT  &kp LEFT_GUI      &mt LEFT_SHIFT LANGUAGE_1  &lt 3 SPACE     &lt 6 LANGUAGE_2    &lt 5 ENTER      &kp BACKSPACE                                              &kp DELETE
             >;
