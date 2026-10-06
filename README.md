@@ -5,6 +5,7 @@ BobTail / BobTailESC のファームウェア。[na-ka-no/zmk-config-BobTail](ht
 - 右手側が親機（PC と接続する側）。トラックボールも右手側
 - エンコーダの回転は Ctrl+→ / Ctrl+←（Mac のデスクトップ切り替え）
 - Num キー（左親指の `LANG2`）を押している間、トラックボールがスクロールになる
+- AML（オートマウスレイヤー）は OFF。有効にするには `config/boards/shields/Test/BobTail_R.overlay` の `automouse-layer` のコメントを外す
 
 # Keymaps
 
