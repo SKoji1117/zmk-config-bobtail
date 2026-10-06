@@ -101,7 +101,7 @@
 &kp Q      &kp W         &kp E         &kp R                      &kp T                                                &kp Y           &kp U       &kp I             &kp O       &kp P
 &kp A      &hml LCTRL S         &hml LSHFT D         &hml LGUI F                      &hml LALT G           &none               &kp TAB          &hmr LALT H           &hmr LGUI J       &hmr LSHFT K             &hmr LCTRL L       &kp MINUS
 &kp Z      &kp X         &kp C         &kp V                      &kp B           &kp LG(LS(N4))      &lt 7 HASH       &kp N           &kp M       &kp COMMA         &kp PERIOD  &kp SLASH
-&kp LCTRL  &kp LEFT_ALT  &kp LEFT_GUI  &mt LEFT_SHIFT LANGUAGE_1  &lt 2 SPACE     &lt 6 LANGUAGE_2    &lt 4 ENTER      &kp BACKSPACE                                             &kp DELETE
+&kp LCTRL  &kp LEFT_ALT  &kp LEFT_GUI  &mt LEFT_SHIFT LANGUAGE_1  &lt 2 SPACE     &lt 6 LANGUAGE_2    &kp BACKSPACE    &lt 4 ENTER                                             &kp DELETE
             >;
 
             // デスクトップ（Mission Control の操作スペース）の切り替え。他のレイヤーにも透過する
@@ -113,7 +113,7 @@
 &kp Q      &kp W         &kp E             &kp R                      &kp T                                                &kp Y           &kp U        &kp I             &kp O       &kp P
 &kp A      &hml LCTRL S         &hml LSHFT D             &hml LCTRL F                      &hml LALT G           &none               &kp TAB          &hmr LALT H           &hmr LCTRL J        &hmr LSHFT K             &hmr LCTRL L       &kp MINUS
 &kp Z      &kp X         &kp C             &kp V                      &kp B           &kp LG(LS(S))       &lt 7 HASH       &kp N           &kp M        &kp COMMA         &kp PERIOD  &kp SLASH
-&kp LCTRL  &kp LEFT_ALT  &kp LEFT_GUI      &mt LEFT_SHIFT LANGUAGE_1  &lt 3 SPACE     &lt 6 LANGUAGE_2    &lt 5 ENTER      &kp BACKSPACE                                              &kp DELETE
+&kp LCTRL  &kp LEFT_ALT  &kp LEFT_GUI      &mt LEFT_SHIFT LANGUAGE_1  &lt 3 SPACE     &lt 6 LANGUAGE_2    &kp BACKSPACE    &lt 5 ENTER                                              &kp DELETE
             >;
         };
 
@@ -122,7 +122,7 @@
 &kp LG(A)  &kp LG(X)     &kp LG(C)    &kp LG(V)  &kp LG(F)                                      &kp LESS_THAN         &kp GREATER_THAN       &kp CARET        &kp PERCENT    &kp DOLLAR
 &kp TAB    &kp LEFT_GUI  &kp LS(TAB)  &mkp MB1   &mkp MB2   &trans              &kp GRAVE       &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp AT_SIGN      &kp AMPERSAND  &kp DOUBLE_QUOTES
 &trans     &trans        &trans       &trans     &mkp MB3   &kp LG(LS(N5))      &kp BACKSLASH   &kp LEFT_BRACKET      &kp RIGHT_BRACKET      &kp EXCLAMATION  &kp QUESTION   &kp SQT
-&trans     &trans        &trans       &trans     &trans     &trans              &kp ENTER       &kp BACKSPACE                                                                &kp HASH
+&trans     &trans        &trans       &trans     &trans     &trans              &kp BACKSPACE   &kp ENTER                                                                &kp HASH
             >;
         };
 
@@ -131,7 +131,7 @@
 &kp LC(A)  &kp LC(X)  &kp LC(C)    &kp LC(V)  &kp LC(LS(V))                              &kp LESS_THAN         &kp GREATER_THAN       &kp CARET        &kp PERCENT    &kp DOLLAR
 &kp TAB    &kp LCTRL  &kp LS(TAB)  &mkp MB1   &mkp MB2       &trans      &kp COLON       &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp AT_SIGN      &kp AMPERSAND  &kp DOUBLE_QUOTES
 &trans     &trans     &trans       &trans     &mkp MB3       &trans      &kp BACKSLASH   &kp LEFT_BRACKET      &kp RIGHT_BRACKET      &kp EXCLAMATION  &kp QUESTION   &kp SQT
-&trans     &trans     &trans       &trans     &trans         &trans      &kp ENTER       &kp BACKSPACE                                                                &kp HASH
+&trans     &trans     &trans       &trans     &trans         &trans      &kp BACKSPACE   &kp ENTER                                                                &kp HASH
             >;
         };
 
@@ -158,7 +158,7 @@
 &kp F1   &kp F2   &kp F3  &kp F4  &kp F5                                   &kp PLUS      &kp MINUS  &kp NUMBER_7  &kp NUMBER_8  &kp NUMBER_9
 &kp F6   &kp F7   &kp F8  &kp F9  &kp F10  &trans      &kp DOLLAR      &kp EQUAL     &kp COLON  &kp N4        &kp N5        &kp N6
 &kp F11  &kp F12  &trans  &trans  &trans   &trans      &kp AMPERSAND   &kp ASTERISK  &kp SLASH  &kp NUMBER_1  &kp NUMBER_2  &kp NUMBER_3
-&trans   &trans   &trans  &trans  &trans   &trans      &kp ENTER       &kp BACKSPACE                                        &kp N0
+&trans   &trans   &trans  &trans  &trans   &trans      &kp BACKSPACE   &kp ENTER                                        &kp N0
             >;
         };
 
@@ -167,7 +167,7 @@
 &studio_unlock  &trans  &trans  &trans  &trans                                  &bt_0_win   &bt_1_mac  &bt_2_mac  &bt_3_android  &bt BT_SEL 4
 &trans          &trans  &trans  &trans  &trans  &trans      &studio_unlock  &trans      &trans     &trans     &trans         &trans
 &trans          &trans  &trans  &trans  &trans  &to 0       &trans          &trans      &trans     &trans     &trans         &bt BT_CLR
-&trans          &trans  &trans  &trans  &trans  &to 1       &bootloader     &sys_reset                                       &trans
+&trans          &trans  &trans  &trans  &trans  &to 1       &sys_reset      &bootloader                                       &trans
             >;
         };
 
