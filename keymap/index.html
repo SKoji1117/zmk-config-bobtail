@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BobTail キーマップ</title>
+<style>
+  :root {
+    --bg: #f6f6f4; --card: #fff; --fg: #1d1d1b; --muted: #6b6b66; --line: #d9d9d4;
+    --key: #fbfbfa; --key-line: #c9c9c3; --trans: #b3b3ad; --hold: #8a6d1f;
+    --hit: #ffe28a; --hit-line: #c99a00; --accent: #2f6fb3;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #151515; --card: #1e1e1e; --fg: #ececea; --muted: #a0a09a; --line: #333;
+      --key: #262626; --key-line: #3d3d3d; --trans: #5c5c58; --hold: #d9b45a;
+      --hit: #6b5310; --hit-line: #e0b33a; --accent: #6fa8e6;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 16px; background: var(--bg); color: var(--fg);
+         font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; }
+  main { max-width: 1100px; margin: 0 auto; }
+  h1 { font-size: 20px; margin: 0 0 12px; }
+  .bar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+  #q { flex: 1 1 240px; font-size: 18px; padding: 8px 12px; border: 1px solid var(--line);
+       border-radius: 8px; background: var(--card); color: var(--fg); }
+  .os button { font: inherit; padding: 8px 14px; border: 1px solid var(--line); background: var(--card);
+               color: var(--fg); cursor: pointer; }
+  .os button:first-child { border-radius: 8px 0 0 8px; }
+  .os button:last-child { border-radius: 0 8px 8px 0; border-left: 0; }
+  .os button[aria-pressed="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+  #results { margin: 0 0 16px; padding: 0; list-style: none; }
+  #results li { background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+                padding: 8px 12px; margin-bottom: 6px; }
+  #results .none { color: var(--muted); }
+  .note { color: var(--muted); font-size: 13px; }
+  .layer { background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+           padding: 12px; margin-bottom: 14px; }
+  .layer h2 { font-size: 16px; margin: 0 0 8px; }
+  .layer h2 span { font-weight: normal; color: var(--muted); font-size: 14px; }
+  .board { position: relative; width: 100%; aspect-ratio: 1300 / 450; }
+  .key { position: absolute; padding: 2px; }
+  .key > div { width: 100%; height: 100%; border: 1px solid var(--key-line); border-radius: 6px;
+               background: var(--key); display: flex; flex-direction: column; align-items: center;
+               justify-content: center; text-align: center; overflow: hidden; line-height: 1.1; }
+  .tap { font-size: clamp(9px, 1.6vw, 17px); font-weight: 600; word-break: break-all; padding: 0 2px; }
+  .tap.long { font-size: clamp(7px, 1.05vw, 12px); }
+  .hold { font-size: clamp(7px, 1vw, 11px); color: var(--hold); margin-top: 2px; }
+  .key.trans .tap { color: var(--trans); font-weight: normal; }
+  .key.none > div { background: transparent; border-style: dashed; }
+  .key.hit > div { background: var(--hit); border-color: var(--hit-line); border-width: 2px; }
+  .enc { font-size: 13px; color: var(--muted); margin-top: 6px; }
+  footer { color: var(--muted); font-size: 13px; margin-top: 8px; }
+  a { color: var(--accent); }
+  @media (max-width: 600px) { body { padding: 12px; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>BobTail キーマップ</h1>
+  <div class="bar">
+    <input id="q" type="search" placeholder="探す文字やキー（例: *  ~  _  Tab）" autocomplete="off" autofocus>
+    <div class="os" role="group" aria-label="OS">
+      <button type="button" data-os="mac">Mac</button><button type="button" data-os="win">Win</button>
+    </div>
+  </div>
+  <ul id="results"></ul>
+  <div id="layers"><p class="note">読み込み中…</p></div>
+  <footer>
+    <a href="https://github.com/SKoji1117/zmk-config-bobtail/blob/main/config/BobTail.keymap">config/BobTail.keymap</a>
+    を読み込んで表示しています。薄い文字は、下のレイヤーのキーがそのまま効く位置です。
+  </footer>
+</main>
+<script>
+"use strict";
+
+const SOURCES = {
+  keymap: "../config/BobTail.keymap",
+  dtsi: "../config/boards/shields/Test/BobTail.dtsi",
+  overlayR: "../config/boards/shields/Test/BobTail_R.overlay",
+};
+
+// ZMKのキー名 → 表示する文字
+const KEY_LABELS = {
+  SPACE: "Space", SPC: "Space", TAB: "Tab", ENTER: "Enter", RET: "Enter", RETURN: "Enter",
+  BACKSPACE: "BS", BSPC: "BS", DELETE: "Del", DEL: "Del", ESCAPE: "Esc", ESC: "Esc",
+  LEFT_ARROW: "←", LEFT: "←", RIGHT_ARROW: "→", RIGHT: "→", UP_ARROW: "↑", UP: "↑",
+  DOWN_ARROW: "↓", DOWN: "↓", HOME: "Home", END: "End",
+  PAGE_UP: "PgUp", PG_UP: "PgUp", PAGE_DOWN: "PgDn", PG_DN: "PgDn",
+  LANGUAGE_1: "かな", LANG1: "かな", LANGUAGE_2: "英数", LANG2: "英数",
+  MINUS: "-", EQUAL: "=", PLUS: "+", ASTERISK: "*", STAR: "*", SLASH: "/", FSLH: "/",
+  BACKSLASH: "\\", BSLH: "\\", SEMI: ";", SEMICOLON: ";", COLON: ":",
+  SQT: "'", SINGLE_QUOTE: "'", APOSTROPHE: "'", APOS: "'", DOUBLE_QUOTES: "\"", DQT: "\"",
+  GRAVE: "`", TILDE: "~", COMMA: ",", PERIOD: ".", DOT: ".",
+  LESS_THAN: "<", LT: "<", GREATER_THAN: ">", GT: ">", CARET: "^", PERCENT: "%", PRCNT: "%",
+  DOLLAR: "$", DLLR: "$", AT_SIGN: "@", AT: "@", AMPERSAND: "&", AMPS: "&", HASH: "#", POUND: "#",
+  EXCLAMATION: "!", EXCL: "!", QUESTION: "?", QMARK: "?",
+  LEFT_PARENTHESIS: "(", LPAR: "(", RIGHT_PARENTHESIS: ")", RPAR: ")",
+  LEFT_BRACKET: "[", LBKT: "[", RIGHT_BRACKET: "]", RBKT: "]",
+  LEFT_BRACE: "{", LBRC: "{", RIGHT_BRACE: "}", RBRC: "}", PIPE: "|", UNDERSCORE: "_", UNDER: "_",
+};
+for (let i = 0; i <= 9; i++) { KEY_LABELS["N" + i] = String(i); KEY_LABELS["NUMBER_" + i] = String(i); }
+for (let i = 1; i <= 24; i++) KEY_LABELS["F" + i] = "F" + i;
+
+// 修飾キーそのもの（OSで呼び方が違う）
+const MOD_KEYS = {
+  ctrl: ["LCTRL", "LEFT_CONTROL", "LCTL", "RCTRL", "RIGHT_CONTROL"],
+  shift: ["LSHFT", "LSHIFT", "LEFT_SHIFT", "RSHFT", "RSHIFT", "RIGHT_SHIFT"],
+  alt: ["LALT", "LEFT_ALT", "RALT", "RIGHT_ALT"],
+  gui: ["LGUI", "LEFT_GUI", "LCMD", "LEFT_COMMAND", "LWIN", "LEFT_WIN", "RGUI", "RIGHT_GUI", "RCMD", "RWIN"],
+};
+const MOD_NAMES = {
+  mac: { ctrl: "⌃Ctrl", shift: "⇧Shift", alt: "⌥Opt", gui: "⌘Cmd" },
+  win: { ctrl: "Ctrl", shift: "Shift", alt: "Alt", gui: "Win" },
+};
+const MOD_PREFIX = {
+  mac: { C: "⌃", S: "⇧", A: "⌥", G: "⌘" },
+  win: { C: "Ctrl+", S: "Shift+", A: "Alt+", G: "Win+" },
+};
+// US配列で、Shiftと一緒に押すと出る文字
+const SHIFTED = { "`": "~", "1": "!", "2": "@", "3": "#", "4": "$", "5": "%", "6": "^", "7": "&", "8": "*",
+  "9": "(", "0": ")", "-": "_", "=": "+", "[": "{", "]": "}", "\\": "|", ";": ":", "'": "\"", ",": "<",
+  ".": ">", "/": "?" };
+const UNSHIFTED = Object.fromEntries(Object.entries(SHIFTED).map(([k, v]) => [v, k]));
+
+const MOUSE = { MB1: "左クリック", MB2: "右クリック", MB3: "中クリック", MB4: "戻る", MB5: "進む" };
+const SPECIAL = { studio_unlock: "Studio解除", sys_reset: "Reset", bootloader: "Boot", trans: "", none: "" };
+
+function modKind(code) {
+  for (const [kind, names] of Object.entries(MOD_KEYS)) if (names.includes(code)) return kind;
+  return null;
+}
+
+// キーコード（LG(LS(N4)) のような形を含む）を表示用の文字にする
+function keyLabel(code, os) {
+  const m = /^([LR])([CSAG])\((.*)\)$/.exec(code);
+  if (m) return MOD_PREFIX[os][m[2]] + keyLabel(m[3], os);
+  const kind = modKind(code);
+  if (kind) return MOD_NAMES[os][kind];
+  if (/^[A-Z]$/.test(code)) return code;
+  return KEY_LABELS[code] ?? code;
+}
+
+// キーコードを押して出る1文字（出ないならnull）
+function keyChar(code) {
+  if (/^[A-Z]$/.test(code)) return code.toLowerCase();
+  const m = /^[LR]S\((.*)\)$/.exec(code);
+  if (m) { const base = keyChar(m[1]); return base && SHIFTED[base] ? SHIFTED[base] : null; }
+  if (/^[LR][CAG]\(/.test(code)) return null;
+  const label = KEY_LABELS[code];
+  return label && label.length === 1 ? label : null;
+}
+
+function stripComments(src) {
+  return src.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/[^\n]*/g, "");
+}
+
+function blockAfter(src, start) {
+  let depth = 0;
+  for (let i = src.indexOf("{", start); i < src.length; i++) {
+    if (src[i] === "{") depth++;
+    else if (src[i] === "}" && --depth === 0) return src.slice(src.indexOf("{", start) + 1, i);
+  }
+  return "";
+}
+
+function parseBindingList(text) {
+  const out = [];
+  for (const tok of text.trim().split(/\s+/)) {
+    if (!tok) continue;
+    if (tok.startsWith("&")) out.push({ b: tok.slice(1), p: [] });
+    else if (out.length) out[out.length - 1].p.push(tok);
+  }
+  return out;
+}
+
+function parseKeymap(raw) {
+  const src = stripComments(raw);
+  // hold-tap の定義（hmt など）。1つ目の動作が &mo なら長押しはレイヤー
+  const holdTaps = { mt: "mod", lt: "layer" };
+  for (const m of src.matchAll(/(\w+)\s*:\s*[\w-]+\s*\{([^{}]*)\}/g)) {
+    if (/compatible\s*=\s*"zmk,behavior-hold-tap"/.test(m[2])) {
+      holdTaps[m[1]] = /bindings\s*=\s*<\s*&mo\b/.test(m[2]) ? "layer" : "mod";
+    }
+  }
+  const km = src.search(/compatible\s*=\s*"zmk,keymap"/);
+  const keymapStart = src.lastIndexOf("keymap", km);
+  const body = blockAfter(src, keymapStart);
+  const layers = [];
+  for (const m of body.matchAll(/([\w-]+)\s*\{([^{}]*)\}/g)) {
+    const b = /(?<![-\w])bindings\s*=\s*<([\s\S]*?)>\s*;/.exec(m[2]);
+    if (!b) continue;
+    const s = /sensor-bindings\s*=\s*<([\s\S]*?)>\s*;/.exec(m[2]);
+    layers.push({ node: m[1], bindings: parseBindingList(b[1]), sensor: s ? parseBindingList(s[1]) : null });
+  }
+  return { layers, holdTaps };
+}
+
+function parseLayout(raw) {
+  const keys = [];
+  for (const m of stripComments(raw).matchAll(/<&key_physical_attrs((?:\s+-?\d+){7})\s*>/g)) {
+    const [w, h, x, y] = m[1].trim().split(/\s+/).map(Number);
+    keys.push({ w, h, x, y });
+  }
+  return keys;
+}
+
+function shortName(node) {
+  const name = node.replace(/_Layer$/, "").replace(/^(Mac|Win)-/, "").replace(/_/g, " ");
+  return name === "Default" ? "ベース" : name;
+}
+
+const state = { os: "mac", data: null };
+
+function osLayers(data, os) {
+  const { layers } = data;
+  const macBase = 0;
+  const winBase = layers.findIndex(l => /^Win-Default/.test(l.node));
+  const base = os === "win" && winBase >= 0 ? winBase : macBase;
+  const visible = layers
+    .map((l, i) => ({ ...l, index: i }))
+    .filter(l => {
+      if (/^AutoMouse/.test(l.node) && !data.automouse) return false;
+      if (os === "mac") return !/^Win-/.test(l.node);
+      return !/^Mac-/.test(l.node);
+    });
+  // 透過（&trans）のときに下で効くレイヤーの並び
+  const stack = os === "win" && winBase >= 0 ? [winBase, macBase] : [macBase];
+  return { base, visible, stack };
+}
+
+function describe(binding, data, os) {
+  const { b, p } = binding;
+  const ht = data.holdTaps[b];
+  if (b === "kp") return { tap: keyLabel(p[0], os), char: keyChar(p[0]) };
+  if (ht && p.length === 2) {
+    const hold = ht === "layer" ? shortName(data.layers[Number(p[0])]?.node ?? "L" + p[0]) : keyLabel(p[0], os);
+    return { tap: keyLabel(p[1], os), hold, char: keyChar(p[1]), layer: ht === "layer" ? Number(p[0]) : null };
+  }
+  if (b === "mo") return { tap: shortName(data.layers[Number(p[0])].node), hold: "押す間", layer: Number(p[0]) };
+  if (b === "to") return { tap: "→" + shortName(data.layers[Number(p[0])].node) };
+  if (b === "mkp") return { tap: MOUSE[p[0]] ?? p[0] };
+  if (b === "bt") return { tap: p[0] === "BT_SEL" ? "BT" + p[1] : p[0] === "BT_CLR" ? "BT消去" : p.join(" ") };
+  if (b in SPECIAL) return { tap: SPECIAL[b] };
+  const bt = /^bt_(\d)_(\w+)$/.exec(b);
+  if (bt) return { tap: `BT${bt[1]} ${bt[2][0].toUpperCase()}${bt[2].slice(1)}` };
+  return { tap: [b, ...p].join(" ") };
+}
+
+// 位置 i で実際に効く割り当て（&trans なら下のレイヤーへ）
+function effective(data, layerIndex, i, stack) {
+  for (const li of [layerIndex, ...stack]) {
+    const binding = data.layers[li].bindings[i];
+    if (binding && binding.b !== "trans") return { binding, from: li };
+  }
+  return { binding: { b: "none", p: [] }, from: layerIndex };
+}
+
+function activator(data, os, layerIndex) {
+  const { base, stack } = osLayers(data, os);
+  if (layerIndex === base) return null;
+  for (const li of [base, ...stack]) {
+    const bindings = data.layers[li].bindings;
+    for (let i = 0; i < bindings.length; i++) {
+      const d = describe(bindings[i], data, os);
+      if (d.layer === layerIndex) return { i, label: d.tap === shortName(data.layers[layerIndex].node) ? "" : d.tap };
+    }
+  }
+  return null;
+}
+
+function hand(data, i) {
+  const k = data.layout[i];
+  return k && k.x + k.w / 2 < 650 ? "左手" : "右手";
+}
+
+function howTo(data, os, layerIndex, i) {
+  const { base } = osLayers(data, os);
+  const baseLabel = describe(effective(data, base, i, osLayers(data, os).stack).binding, data, os).tap;
+  const where = `${hand(data, i)}の「${baseLabel || "空き"}」の位置`;
+  if (layerIndex === base) return where.replace("の位置", "のキー");
+  const act = activator(data, os, layerIndex);
+  const name = shortName(data.layers[layerIndex].node);
+  if (!act) return `${name}層で、${where}`;
+  return `${name}層（${hand(data, act.i)}の「${act.label}」を長押し）で、${where}`;
+}
+
+function search(data, os, q) {
+  q = q.trim();
+  if (!q) return [];
+  const { visible, stack } = osLayers(data, os);
+  const lower = q.toLowerCase();
+  const direct = [], shifted = [];
+  const unshifted = q.length === 1 ? UNSHIFTED[q] : undefined;
+  for (const layer of visible) {
+    layer.bindings.forEach((binding, i) => {
+      if (binding.b === "trans" || binding.b === "none") return;
+      const d = describe(binding, data, os);
+      const hit = q.length === 1
+        ? (d.char === q || d.char === lower)
+        : [d.tap, d.hold].some(t => t && t.toLowerCase() === lower) || binding.p.some(t => t.toLowerCase() === lower);
+      if (hit) direct.push({ layer: layer.index, i, text: howTo(data, os, layer.index, i) });
+      else if (unshifted && d.char === unshifted) {
+        shifted.push({ layer: layer.index, i, text: "Shiftを押しながら、" + howTo(data, os, layer.index, i) });
+      }
+    });
+  }
+  return direct.length ? direct : shifted;
+}
+
+function render() {
+  const data = state.data;
+  if (!data) return;
+  const os = state.os;
+  for (const btn of document.querySelectorAll(".os button")) btn.setAttribute("aria-pressed", String(btn.dataset.os === os));
+  const q = document.getElementById("q").value;
+  const hits = search(data, os, q);
+  const hitSet = new Set(hits.map(h => h.layer + ":" + h.i));
+
+  const results = document.getElementById("results");
+  results.textContent = "";
+  if (q.trim()) {
+    if (!hits.length) {
+      const li = document.createElement("li");
+      li.className = "none";
+      li.textContent = `「${q.trim()}」を出すキーは見つかりませんでした。`;
+      results.appendChild(li);
+    }
+    for (const h of hits) {
+      const li = document.createElement("li");
+      li.textContent = h.text;
+      results.appendChild(li);
+    }
+  }
+
+  const { visible, stack, base } = osLayers(data, os);
+  const root = document.getElementById("layers");
+  root.textContent = "";
+  const width = Math.max(...data.layout.map(k => k.x + k.w));
+  const height = Math.max(...data.layout.map(k => k.y + k.h));
+  for (const layer of visible) {
+    const card = document.createElement("section");
+    card.className = "layer";
+    const h2 = document.createElement("h2");
+    h2.textContent = shortName(layer.node);
+    const act = activator(data, os, layer.index);
+    if (act) {
+      const span = document.createElement("span");
+      span.textContent = `　${hand(data, act.i)}の「${act.label}」を長押し`;
+      h2.appendChild(span);
+    }
+    card.appendChild(h2);
+    const board = document.createElement("div");
+    board.className = "board";
+    board.style.aspectRatio = `${width} / ${height}`;
+    data.layout.forEach((k, i) => {
+      const { binding, from } = effective(data, layer.index, i, stack);
+      const d = describe(binding, data, os);
+      const el = document.createElement("div");
+      el.className = "key" + (from !== layer.index ? " trans" : "") + (binding.b === "none" ? " none" : "")
+        + (hitSet.has(layer.index + ":" + i) ? " hit" : "");
+      Object.assign(el.style, { left: k.x / width * 100 + "%", top: k.y / height * 100 + "%",
+        width: k.w / width * 100 + "%", height: k.h / height * 100 + "%" });
+      const inner = document.createElement("div");
+      const tap = document.createElement("span");
+      tap.className = "tap" + ((d.tap || "").length > 4 ? " long" : "");
+      tap.textContent = d.tap || "";
+      inner.appendChild(tap);
+      if (d.hold && from === layer.index) {
+        const hold = document.createElement("span");
+        hold.className = "hold";
+        hold.textContent = d.hold;
+        inner.appendChild(hold);
+      }
+      el.title = binding.b === "none" ? "" : `&${binding.b} ${binding.p.join(" ")}`;
+      el.appendChild(inner);
+      board.appendChild(el);
+    });
+    card.appendChild(board);
+    // Winのベースはエンコーダの割り当てを持たず、Macのベースのものがそのまま効く
+    const sensor = layer.sensor ?? (layer.index === base ? data.layers[0].sensor : null);
+    if (sensor && sensor[0]?.b === "inc_dec_kp") {
+      const [cw, ccw] = sensor[0].p;
+      const enc = document.createElement("div");
+      enc.className = "enc";
+      enc.textContent = `エンコーダ：時計回り ${keyLabel(cw, os)}／反時計回り ${keyLabel(ccw, os)}`;
+      card.appendChild(enc);
+    }
+    root.appendChild(card);
+  }
+  const url = new URL(location.href);
+  q.trim() ? url.searchParams.set("q", q.trim()) : url.searchParams.delete("q");
+  url.searchParams.set("os", os);
+  history.replaceState(null, "", url);
+}
+
+async function load() {
+  const get = async path => {
+    const res = await fetch(path, { cache: "no-cache" });
+    if (!res.ok) throw new Error(`${path}: ${res.status}`);
+    return res.text();
+  };
+  const [keymap, dtsi, overlayR] = await Promise.all([get(SOURCES.keymap), get(SOURCES.dtsi), get(SOURCES.overlayR)]);
+  const parsed = parseKeymap(keymap);
+  return {
+    ...parsed,
+    layout: parseLayout(dtsi),
+    automouse: /^\s*automouse-layer\s*=/m.test(stripComments(overlayR)),
+  };
+}
+
+(function init() {
+  const params = new URLSearchParams(location.search);
+  let saved = null;
+  try { saved = localStorage.getItem("bobtail-os"); } catch (e) { /* 保存できなくても動かす */ }
+  state.os = params.get("os") === "win" || params.get("os") === "mac" ? params.get("os") : saved === "win" ? "win" : "mac";
+  const input = document.getElementById("q");
+  input.value = params.get("q") ?? "";
+  input.addEventListener("input", render);
+  for (const btn of document.querySelectorAll(".os button")) {
+    btn.addEventListener("click", () => {
+      state.os = btn.dataset.os;
+      try { localStorage.setItem("bobtail-os", state.os); } catch (e) { /* 同上 */ }
+      render();
+    });
+  }
+  load().then(data => { state.data = data; render(); }).catch(err => {
+    document.getElementById("layers").innerHTML = "";
+    const p = document.createElement("p");
+    p.className = "note";
+    p.textContent = "キーマップを読み込めませんでした: " + err.message;
+    document.getElementById("layers").appendChild(p);
+  });
+})();
+</script>
+</body>
+</html>
