@@ -105,7 +105,7 @@
         Mac-Function_Layer {
             bindings = <
 &kp LG(A)  &kp LG(X)     &kp LG(C)    &kp LG(V)  &kp LG(F)                                      &kp LESS_THAN         &kp GREATER_THAN       &kp CARET        &kp PERCENT    &kp DOLLAR
-&kp TAB    &kp LEFT_GUI  &kp LS(TAB)  &mkp MB1   &mkp MB2   &trans              &kp GRAVE       &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp AT_SIGN      &kp AMPERSAND  &kp DOUBLE_QUOTES
+&kp TAB    &kp LEFT_ALT  &kp LS(TAB)  &mkp MB1   &mkp MB2   &trans              &kp GRAVE       &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp AT_SIGN      &kp AMPERSAND  &kp DOUBLE_QUOTES
 &trans     &kp TILDE     &trans       &trans     &mkp MB3   &kp LG(LS(N5))      &kp BACKSLASH   &kp LEFT_BRACKET      &kp RIGHT_BRACKET      &kp EXCLAMATION  &kp QUESTION   &kp SQT
 &trans     &trans        &trans       &trans     &trans     &trans              &kp BACKSPACE   &kp ENTER                                                                &kp HASH
             >;
@@ -114,7 +114,7 @@
         Win-Function_Layer {
             bindings = <
 &kp LC(A)  &kp LC(X)  &kp LC(C)    &kp LC(V)  &kp LC(LS(V))                              &kp LESS_THAN         &kp GREATER_THAN       &kp CARET        &kp PERCENT    &kp DOLLAR
-&kp TAB    &kp LCTRL  &kp LS(TAB)  &mkp MB1   &mkp MB2       &trans      &kp COLON       &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp AT_SIGN      &kp AMPERSAND  &kp DOUBLE_QUOTES
+&kp TAB    &kp LALT   &kp LS(TAB)  &mkp MB1   &mkp MB2       &trans      &kp COLON       &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp AT_SIGN      &kp AMPERSAND  &kp DOUBLE_QUOTES
 &trans     &kp TILDE  &trans       &trans     &mkp MB3       &trans      &kp BACKSLASH   &kp LEFT_BRACKET      &kp RIGHT_BRACKET      &kp EXCLAMATION  &kp QUESTION   &kp SQT
 &trans     &trans     &trans       &trans     &trans         &trans      &kp BACKSPACE   &kp ENTER                                                                &kp HASH
             >;
