@@ -11,8 +11,9 @@ set -euo pipefail
 # ZMK_REPO を渡すと、同じ構成の別の zmk-config リポをビルドできる
 REPO="${ZMK_REPO:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 WS="${ZMK_WS:-$HOME/zmk-ws/$(basename "$REPO")}"
-# ZMK フォークが Zephyr 3.5 系なので、イメージも 3.5 に固定する
-IMAGE="${ZMK_IMAGE:-zmkfirmware/zmk-build-arm:3.5}"
+# CI（build-user-config.yml）が使うstableを、2026-10-15のCIログにあったダイジェストで固定する。
+# 3.5タグはSDKが0.16.3で、CI（0.16.9）と違うuf2になる
+IMAGE="${ZMK_IMAGE:-zmkfirmware/zmk-build-arm:stable@sha256:edb1c953438c6f720ddb79c3762f3972013b7fbbaf4fff3592fc869983e7afc5}"
 
 mkdir -p "$WS/out" "$WS/.home"
 
