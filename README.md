@@ -10,13 +10,7 @@ BobTail / BobTailESC のファームウェア。[na-ka-no/zmk-config-BobTail](ht
 
 # Keymaps
 
-## Mac (& NUM & settings)
-
-![mac](figs/mac_and_setting_layer.svg)
-
-## Windows
-
-![windows](figs/win-keymap.svg)
+[キーマップのページ](https://skoji1117.github.io/zmk-config-bobtail/keymap/)で、MacとWindowsの全レイヤーの配置を見られる。検索欄に文字を入れると、その文字の押し方が出る（`?q=*`のように、URLで検索語を渡すこともできる）。ページは`config/BobTail.keymap`を読み込んで描くので、mainにpushすると、GitHub Pagesの配信が終わった時点で変わる。
 
 起動時は Mac のレイヤー。Setting レイヤー（右内側の `#` を長押し）の BT 切り替えキーで、接続先と一緒に Mac / Windows が切り替わる。
 
@@ -81,6 +75,6 @@ main に push すると走る。ただし、ビルドに関わるファイル（
 2. `bash scripts/build-local.sh` でビルドが通ることを確かめる
 3. main に push する。Actions が通ると、新しい Release に uf2 が置かれる
 4. 上の「ファームウェアの適用方法」で書き込む
-5. [keymap-drawer](https://keymap-drawer.streamlit.app/) に `.keymap` を読ませて `figs/` の画像を更新する
+5. キーマップのページは、push後にGitHub Pagesの配信が終わると変わる。画像を作り直す作業は要らない
 
 依存（`config/west.yml` の ZMK フォークとトラックボールのドライバ、`.github/workflows/blank.yml` の再利用ワークフロー）は、コミットハッシュに固定してある。上げるときは、ハッシュを書き換えてからローカルビルドで確かめる。
