@@ -3,7 +3,8 @@
 BobTail / BobTailESC のファームウェア。[na-ka-no/zmk-config-BobTail](https://github.com/na-ka-no/zmk-config-BobTail) の fork で、キーマップを [AroundForty-RB](https://github.com/SKoji1117/zmk-config-AroundFortyRB) に合わせてある。
 
 - 右手側が親機（PC と接続する側）。トラックボールも右手側
-- エンコーダの回転は Ctrl+→ / Ctrl+←（Mac のデスクトップ切り替え）
+- エンコーダの回転は、時計回りでCtrl+F19、反時計回りでCtrl+F18。Orcaの`~/.orca/keybindings.json`で`worktree.navigateUp`にCtrl+F19、`worktree.navigateDown`にCtrl+F18を割り当て、時計回りで上、反時計回りで下のworktreeに切り替える
+- Enter（右親指）を押している間（Commonレイヤー）は、エンコーダの回転が時計回りでCtrl+F17、反時計回りでCtrl+F16になる。Orcaのキーバインド設定で「次のタブ（すべての種類）」にCtrl+F17、「前のタブ（すべての種類）」にCtrl+F16を割り当て、タブを前後に切り替える
 - Num キー（左親指の `LANG2`）を押している間、トラックボールがスクロールになる
 - AML（オートマウスレイヤー）は OFF。有効にするには `config/boards/shields/Test/BobTail_R.overlay` の `automouse-layer` のコメントを外す
 

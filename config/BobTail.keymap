@@ -89,8 +89,9 @@
 &kp LCTRL  &kp LEFT_ALT  &kp LEFT_GUI  &mt LEFT_SHIFT LANGUAGE_1  &lt 2 SPACE     &lt 6 LANGUAGE_2    &kp BACKSPACE    &lt 4 ENTER                                             &kp DELETE
             >;
 
-            // デスクトップ（Mission Control の操作スペース）の切り替え。他のレイヤーにも透過する
-            sensor-bindings = <&inc_dec_kp LC(RIGHT_ARROW) LC(LEFT_ARROW)>;
+            // Orcaのworktreeの切り替え。時計回りでCtrl+F19（前）、反時計回りでCtrl+F18（次）を送り、
+            // Orcaの~/.orca/keybindings.jsonで割り当てる。Common以外のレイヤーにも透過する
+            sensor-bindings = <&inc_dec_kp LC(F19) LC(F18)>;
         };
 
         Win-Default_Layer {
@@ -127,6 +128,10 @@
 &kp LEFT_SHIFT  &trans    &trans       &kp LG(DOWN_ARROW)  &trans               &trans      &trans         &kp LG(LS(TAB))  &kp LG(LEFT_ARROW)  &kp SEMI      &kp LG(RIGHT_ARROW)  &kp PAGE_DOWN
 &kp LCTRL       &trans    &trans       &trans              &trans               &trans      &trans         &trans                                                                  &kp END
             >;
+
+            // Orcaのタブの切り替え。時計回りでCtrl+F17（次）、反時計回りでCtrl+F16（前）を送り、
+            // Orcaのキーバインド設定で割り当てる
+            sensor-bindings = <&inc_dec_kp LC(F17) LC(F16)>;
         };
 
         Win-Common_Layer {
@@ -136,6 +141,10 @@
 &kp LEFT_SHIFT  &trans     &trans       &kp LC(DOWN_ARROW)  &trans               &trans      &trans         &kp LC(PAGE_DOWN)  &kp LA(LEFT_ARROW)  &kp SEMICOLON  &kp LA(RIGHT_ARROW)  &kp PAGE_DOWN
 &kp LCTRL       &trans     &trans       &trans              &trans               &trans      &trans         &trans                                                                     &kp END
             >;
+
+            // Orcaのタブの切り替え。時計回りでCtrl+F17（次）、反時計回りでCtrl+F16（前）を送り、
+            // Orcaのキーバインド設定で割り当てる
+            sensor-bindings = <&inc_dec_kp LC(F17) LC(F16)>;
         };
 
         Num_Layer {
